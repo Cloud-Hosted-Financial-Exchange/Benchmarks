@@ -8,7 +8,7 @@ class SimplePQ {
     uint64_t d;  // total dequeues
 
     std::mutex mtx;
-    std::priority_queue<PQ_ITEM> pq;
+    std::priority_queue<PQ_ITEM, std::vector<PQ_ITEM>, std::greater<PQ_ITEM>> pq;
 public:
     SimplePQ(int d_s): d_s(d_s), e(0), d(0) {}
 
@@ -22,17 +22,13 @@ public:
         std::lock_guard<std::mutex> lock(mtx);
         if (pq.empty()) return false;
 
-        PQ_ITEM x = unsafe_top();
+        PQ_ITEM x = pq.top();
         if (get_time() - x < d_s) return false;
 
         d++;
         pq.pop();
 
         return true;
-    }
-
-    PQ_ITEM unsafe_top() {
-        return pq.top();
     }
 
     int get_total_dequeues() {
