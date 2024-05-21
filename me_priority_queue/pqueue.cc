@@ -33,6 +33,7 @@ std::vector<PQ_ITEM> create_items() {
     std::vector<PQ_ITEM> res;
     for (int i = 0; i < TOTAL_ITEMS; i++) {
         res.push_back(get_time());
+        for (int j = 0; j < 10; j++) {}
     }
 
     std::random_device rd; // obtain a random number from hardware
@@ -52,16 +53,18 @@ std::vector<PQ_ITEM> create_items() {
 int main() {
     std::vector<double> res;
 
+    using QTYPE=FancyPQ;
+
     for (int epoch = 0; epoch < EXPERIMENT_ITERATIONS; epoch++) {
-        // auto pq = new SimplePQ(SEQUENCER_DELAY);
-        auto pq = new FancyPQ(SEQUENCER_DELAY, TOTAL_QS_FOR_FANCYPQ);
+        auto pq = new QTYPE();
 
         std::vector<PQ_ITEM> items = create_items();
+        std::cout << "Total Items: " << items.size() << std::endl;
 
         auto start = std::chrono::high_resolution_clock::now();
 
-        std::thread t1(enqueue<FancyPQ>, pq, std::ref(items));
-        std::thread t2(dequeue<FancyPQ>, pq);
+        std::thread t1(enqueue<QTYPE>, pq, std::ref(items));
+        std::thread t2(dequeue<QTYPE>, pq);
         t1.join();
         t2.join();
 

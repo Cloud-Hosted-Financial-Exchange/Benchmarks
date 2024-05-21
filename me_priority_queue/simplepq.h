@@ -10,7 +10,7 @@ class SimplePQ {
     std::mutex mtx;
     std::priority_queue<PQ_ITEM, std::vector<PQ_ITEM>, std::greater<PQ_ITEM>> pq;
 public:
-    SimplePQ(int d_s): d_s(d_s), e(0), d(0) {}
+    SimplePQ(int d_s=SEQUENCER_DELAY): d_s(d_s), e(0), d(0) {}
 
     void push(PQ_ITEM x) {
         std::lock_guard<std::mutex> lock(mtx);

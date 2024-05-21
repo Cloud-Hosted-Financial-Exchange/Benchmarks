@@ -15,7 +15,7 @@ class FancyPQ {
 
     std::bitset<TOTAL_QS_FOR_FANCYPQ> bits;
 public:
-    FancyPQ(uint32_t d_s, uint8_t total_qs): d_s(d_s), total_qs(total_qs), e(0), d(0) {
+    FancyPQ(uint32_t d_s=SEQUENCER_DELAY, uint8_t total_qs=TOTAL_QS_FOR_FANCYPQ): d_s(d_s), total_qs(total_qs), e(0), d(0) {
         mtxs = std::vector<std::mutex>(total_qs);
         pqs = std::vector<std::priority_queue<PQ_ITEM, std::vector<PQ_ITEM>, std::greater<PQ_ITEM>>>(total_qs);
 
